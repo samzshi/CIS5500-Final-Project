@@ -15,11 +15,12 @@ app.get("/booksByRating", routes.filterBooksWRatings);
 app.get("/basicAnalysis", routes.basicAnalysis);
 app.get("/book", routes.getBook);
 app.get("/bookCover", routes.getBookCover);
-app.get("/bookRatingMap", routes.getBookRatingMap);
+app.get("/bookRatingMap", routes.getBookRatingsMap);
 app.get("/avgRatingByLocation", routes.avgRatingByLocation);
 app.get("/ageGroupByLocation", routes.ageGroupByLocation);
-app.get("/popularAuthors", routes.getpopularAuthors);
+app.get("/popularAuthors", routes.getPopularAuthors);
 app.get("/mostPopularAuthorSearched", routes.mostPopularAuthorSearched);
+app.get("/temp", routes.temp);
 
 app.listen(config.server_port, () => {
   console.log(

@@ -118,7 +118,7 @@ const getBookCover = async function (req, res) {
 
   const query = `
         SELECT Title, ImageL
-        FROM Book_basic
+        FROM Books_basic
     `;
 
   connection.query(query, (err, data) => {
@@ -131,7 +131,7 @@ const getBookCover = async function (req, res) {
   });
 };
 
-const bookRatingsMap = async function (req, res) {
+const getBookRatingsMap = async function (req, res) {
   const { ISBN } = req.query;
 
   const query = `
@@ -259,14 +259,28 @@ const mostPopularAuthorSearched = async function (req, res) {
   });
 };
 
+const temp = async function (req, res) {
+  const query = `select * from Users limit 100`;
+  connection.query(query, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
+
 module.exports = {
   filterBooksWFeatures,
   filterBooksWRatings,
+  basicAnalysis,
   getBook,
   getBookCover,
-  bookRatingsMap,
-  avgRatingPerLocation: avgRatingByLocation,
-  ageGroupPerLocation: ageGroupByLocation,
+  getBookRatingsMap,
+  avgRatingByLocation,
+  ageGroupByLocation,
   getPopularAuthors,
   mostPopularAuthorSearched,
+  temp,
 };

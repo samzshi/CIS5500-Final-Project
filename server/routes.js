@@ -91,7 +91,7 @@ const basicAnalysis = async function (req, res) {
   });
 };
 
-const getBookInfo = async function (req, res) {
+const getBook = async function (req, res) {
   const { ISBN } = req.query;
 
   const query = `
@@ -154,7 +154,7 @@ const bookRatingsMap = async function (req, res) {
   });
 };
 
-const avgRatingPerLocation = async function (req, res) {
+const avgRatingByLocation = async function (req, res) {
   const { ISBN } = req.query;
 
   const query = `
@@ -178,7 +178,7 @@ const avgRatingPerLocation = async function (req, res) {
   });
 };
 
-const ageGroupPerLocation = async function (req, res) {
+const ageGroupByLocation = async function (req, res) {
   const query = `
     SELECT BR.Title, BR.Location, MIN(BR.Age), MAX(BR.Age)
     FROM (
@@ -260,11 +260,13 @@ const mostPopularAuthorSearched = async function (req, res) {
 };
 
 module.exports = {
-  getBookInfo,
+  filterBooksWFeatures,
+  filterBooksWRatings,
+  getBook,
   getBookCover,
   bookRatingsMap,
-  avgRatingPerLocation,
-  ageGroupPerLocation,
+  avgRatingPerLocation: avgRatingByLocation,
+  ageGroupPerLocation: ageGroupByLocation,
   getPopularAuthors,
   mostPopularAuthorSearched,
 };

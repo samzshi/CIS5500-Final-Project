@@ -10,17 +10,16 @@ app.use(
   })
 );
 
-// We use express to define our various API endpoints and
-// provide their handlers that we implemented in routes.js
-// app.get('/author/:type', routes.author);
-// app.get('/random', routes.random);
-// app.get('/song/:song_id', routes.song);
-// app.get('/album/:album_id', routes.album);
-// app.get('/albums', routes.albums);
-// app.get('/album_songs/:album_id', routes.album_songs);
-// app.get('/top_songs', routes.top_songs);
-// app.get('/top_albums', routes.top_albums);
-// app.get('/search_songs', routes.search_songs);
+app.get("/booksByFeatures", routes.filterBooksWFeatures);
+app.get("/booksByRating", routes.filterBooksWRatings);
+app.get("/basicAnalysis", routes.basicAnalysis);
+app.get("/book", routes.getBook);
+app.get("/bookCover", routes.getBookCover);
+app.get("/bookRatingMap", routes.getBookRatingMap);
+app.get("/avgRatingByLocation", routes.avgRatingByLocation);
+app.get("/ageGroupByLocation", routes.ageGroupByLocation);
+app.get("/popularAuthors", routes.getpopularAuthors);
+app.get("/mostPopularAuthorSearched", routes.mostPopularAuthorSearched);
 
 app.listen(config.server_port, () => {
   console.log(

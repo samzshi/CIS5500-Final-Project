@@ -167,6 +167,96 @@ const avgRatingPerLocation = async function (req, res) {
         ) BR
         GROUP BY BR.location
     `;
+
+  connection.query(query, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
+
+const ageGroupPerLocation = async function (req, res) {
+  const query = `
+    SELECT BR.Title, BR.Location, MIN(BR.Age), MAX(BR.Age)
+    FROM (
+    SELECT BB.Title, U.Age, U.Location
+    FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book)
+    JOIN Users U ON U.ID = R.ID
+    ) BR
+    GROUP BY BR.Title, BR.Location
+  `;
+
+  connection.query(query, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
+
+const getPopularAuthors = async function (req, res) {
+  const query = `
+        WITH book_rating AS {
+        SELECT COUNT(*) as num_book_rating, SUM(Rating) as total_rating, Book
+        FROM Ratings r
+        GROUP BY Book
+        }, author_rating AS {
+        SELECT SUM(num_book_rating) as num_rating, AVG(total_rating) as
+        avg_rating, bb.Author
+        FROM book_rating br
+        JOIN Books_basic bb ON br.Book = bb.ISBN
+        GROUP BY bb.Author
+        }, num_books AS {
+        SELECT Author, Count(*) as num_books
+        FROM Books_basic
+        GROUP BY Author
+        }
+        SELECT n.Author, n.num_books, a.num_rating, avg_rating
+        FROM num_books n
+        JOIN author_rating a ON n.Author = a.Author
+        ORDER BY a.num_rating, avg_rating, n.num_books
+        LIMIT 100;
+    `;
+
+  connection.query(query, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
+
+const getPopularAuthorSearched = async function (req, res) {
+  const query = `
+        WITH new_books AS {
+        SELECT ISBN, NumSearched
+        FROM Books_meta b
+        WHERE b.DateImported BETWEEN (CURDATE() - INTERVAL 1 YEAR) AND
+        CURDATE()
+        }
+        SELECT b.Author, SUM(n.NumSearched) as search_count
+        FROM new_books n
+        JOIN Books_basic b ON n.ISBN = b.ISBN
+        GROUP BY b.Author
+        ORDER BY search_count
+        LIMIT 1
+    `;
+
+  connection.query(query, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
 };
 
 module.exports = {};

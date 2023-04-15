@@ -1,6 +1,5 @@
 {
-  "rds_host": "proj550.coagkfierndw.us-east-1.rds.amazonaws.com
-",
+  "rds_host": "proj550.coagkfierndw.us-east-1.rds.amazonaws.com",
   "rds_port": "3306",
   "rds_user": "agnesw",
   "rds_password" : "AW550proj",

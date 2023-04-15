@@ -1,9 +1,9 @@
 {
-  "rds_host": "cis550.cntydoivwhvn.us-east-1.rds.amazonaws.com",
+  "rds_host": "proj550.coagkfierndw.us-east-1.rds.amazonaws.com",
   "rds_port": "3306",
-  "rds_user": "rophocale",
-  "rds_password": "rophocale",
-  "rds_db": "SWIFTIFY",
+  "rds_user": "agnesw",
+  "rds_password": "AW550proj",
+  "rds_db": "BOOKS_PROJECT",
   "server_host": "localhost",
   "server_port": "8080"
 }

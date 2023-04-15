@@ -233,7 +233,7 @@ const getPopularAuthors = async function (req, res) {
   });
 };
 
-const getPopularAuthorSearched = async function (req, res) {
+const mostPopularAuthorSearched = async function (req, res) {
   const query = `
         WITH new_books AS {
         SELECT ISBN, NumSearched
@@ -259,4 +259,12 @@ const getPopularAuthorSearched = async function (req, res) {
   });
 };
 
-module.exports = {};
+module.exports = {
+  getBookInfo,
+  getBookCover,
+  bookRatingsMap,
+  avgRatingPerLocation,
+  ageGroupPerLocation,
+  getPopularAuthors,
+  mostPopularAuthorSearched,
+};

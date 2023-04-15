@@ -3,7 +3,7 @@
   "rds_port": "3306",
   "rds_user": "agnesw",
   "rds_password" : "AW550proj",
-  "rds_db": "SWIFTIFY",
+  "rds_db": "BOOKS_PROJECT",
   "server_host": "localhost",
   "server_port":"8080" 
 }

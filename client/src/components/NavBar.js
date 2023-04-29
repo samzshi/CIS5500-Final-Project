@@ -36,7 +36,7 @@ export default function NavBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <NavText href="/" text="BooksPal" isMain />
+          <NavText href="/" text="PagePal" isMain />
           <NavText href="/Ratings" text="Ratings" />
           <NavText href="/Books" text="Books" />
           <Input

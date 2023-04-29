@@ -18,7 +18,7 @@ export default function BooksPage() {
         )
           .then((res) => res.json())
           .then((resJson) => setBooks(resJson));
-  }, []);
+  }, [title]);
 
   const flexFormat = {
     display: "flex",
@@ -29,30 +29,34 @@ export default function BooksPage() {
 
   return (
     <Container style={flexFormat}>
-      {books?.map((book) => (
-        <Box
-          key={book.ISBN}
-          p={3}
-          m={2}
-          style={{
-            background: "white",
-            borderRadius: "16px",
-            border: "2px solid #000",
-            width: "300px",
-            height: "400px",
-          }}
-        >
-          <img
-            src={book.ImageL}
-            alt={`${book.Title} album art`}
-            style={{ width: 250, height: 350 }}
-          />
+      {books.length > 0 ? (
+        books.map((book) => (
+          <Box
+            key={book.ISBN}
+            p={3}
+            m={2}
+            style={{
+              background: "white",
+              borderRadius: "16px",
+              border: "2px solid #000",
+              width: "300px",
+              height: "400px",
+            }}
+          >
+            <img
+              src={book.ImageL}
+              alt={`${book.Title} album art`}
+              style={{ width: 250, height: 350 }}
+            />
 
-          <h4>
-            <NavLink to={`/book/${book.ISBN}`}>{book.Title}</NavLink>
-          </h4>
-        </Box>
-      ))}
+            <h4>
+              <NavLink to={`/book/${book.ISBN}`}>{book.Title}</NavLink>
+            </h4>
+          </Box>
+        ))
+      ) : (
+        <h1>No books found</h1>
+      )}
     </Container>
   );
 }

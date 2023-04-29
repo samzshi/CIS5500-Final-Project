@@ -31,9 +31,15 @@ export default function AlbumsPage() {
             background: "white",
             borderRadius: "16px",
             border: "2px solid #000",
+            width: "300px",
+            height: "400px",
           }}
         >
-          <img src={book.ImageL} alt={`${book.Title} album art`} />
+          <img
+            src={book.ImageL}
+            alt={`${book.Title} album art`}
+            style={{ width: 250, height: 350 }}
+          />
 
           <h4>
             <NavLink to={`/albums/${book.ISBN}`}>{book.Title}</NavLink>

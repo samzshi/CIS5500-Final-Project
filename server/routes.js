@@ -14,7 +14,6 @@ db.connect((err) => err && console.log(err));
 
 const searchBooksByTitle = async function (req, res) {
   const { title } = req.query;
-  console.log(title);
   const query =
     "SELECT * FROM Books_basic WHERE Title LIKE '%" + title + "%' limit 100";
 

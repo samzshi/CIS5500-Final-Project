@@ -51,12 +51,12 @@ const random = async function (req, res) {
   // Only a small change (unrelated to querying) is required for TASK 3 in this route.
   connection.query(
     `
-    SELECT *
-    FROM Songs
-    WHERE explicit <= ${explicit}
-    ORDER BY RAND()
-    LIMIT 1
-  `,
+        SELECT *
+        FROM Songs
+        WHERE explicit <= ${explicit}
+        ORDER BY RAND()
+        LIMIT 1
+    `,
     (err, data) => {
       if (err || data.length === 0) {
         // if there is an error for some reason, or if the query is empty (this should not be possible)
@@ -87,10 +87,10 @@ const song = async function (req, res) {
   // Most of the code is already written for you, you just need to fill in the query
   connection.query(
     `
-    SELECT *
-    FROM Songs
-    WHERE song_id = '${req.params.song_id}'
-  `,
+        SELECT *
+        FROM Songs
+        WHERE song_id = '${req.params.song_id}'
+    `,
     (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
@@ -107,10 +107,10 @@ const album = async function (req, res) {
   // TODO (TASK 5): implement a route that given a album_id, returns all information about the album
   connection.query(
     `
-    SELECT *
-    FROM Albums
-    WHERE album_id = '${req.params.album_id}'
-    `,
+        SELECT *
+        FROM Albums
+        WHERE album_id = '${req.params.album_id}'
+        `,
     (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
@@ -128,10 +128,10 @@ const albums = async function (req, res) {
   // Note that in this case you will need to return multiple albums, so you will need to return an array of objects
   connection.query(
     `
-    SELECT album_id, title, release_date, thumbnail_url
-    FROM Albums
-    ORDER BY release_date DESC
-    `,
+        SELECT album_id, title, release_date, thumbnail_url
+        FROM Albums
+        ORDER BY release_date DESC
+        `,
     (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
@@ -148,11 +148,11 @@ const album_songs = async function (req, res) {
   // TODO (TASK 7): implement a route that given an album_id, returns all songs on that album ordered by track number (ascending)
   connection.query(
     `
-    SELECT song_id, title, number, duration, plays
-    FROM Songs
-    WHERE album_id = '${req.params.album_id}'
-    ORDER BY number ASC
-    `,
+        SELECT song_id, title, number, duration, plays
+        FROM Songs
+        WHERE album_id = '${req.params.album_id}'
+        ORDER BY number ASC
+        `,
     (err, data) => {
       if (err || data.length === 0) {
         console.log(err);
@@ -179,12 +179,12 @@ const top_songs = async function (req, res) {
     // Hint: you will need to use a JOIN to get the album title as well
     connection.query(
       `
-      SELECT song_id, Songs.title, Albums.album_id, Albums.title AS album, plays
-      FROM Songs
-      JOIN Albums
-      ON Songs.album_id = Albums.album_id
-      ORDER BY plays DESC
-      `,
+            SELECT song_id, Songs.title, Albums.album_id, Albums.title AS album, plays
+            FROM Songs
+            JOIN Albums
+            ON Songs.album_id = Albums.album_id
+            ORDER BY plays DESC
+            `,
       (err, data) => {
         if (err || data.length === 0) {
           console.log(err);
@@ -199,14 +199,14 @@ const top_songs = async function (req, res) {
     // Hint: use LIMIT and OFFSET (see https://www.w3schools.com/php/php_mysql_select_limit.asp)
     connection.query(
       `
-      SELECT song_id, Songs.title, Albums.album_id, Albums.title AS album, plays
-      FROM Songs
-      JOIN Albums
-      ON Songs.album_id = Albums.album_id
-      ORDER BY plays DESC
-      LIMIT ${pageSize}
-      OFFSET ${(page - 1) * pageSize}
-      `,
+            SELECT song_id, Songs.title, Albums.album_id, Albums.title AS album, plays
+            FROM Songs
+            JOIN Albums
+            ON Songs.album_id = Albums.album_id
+            ORDER BY plays DESC
+            LIMIT ${pageSize}
+            OFFSET ${(page - 1) * pageSize}
+            `,
       (err, data) => {
         if (err || data.length === 0) {
           console.log(err);
@@ -228,13 +228,13 @@ const top_albums = async function (req, res) {
   if (!page) {
     connection.query(
       `
-      SELECT Albums.album_id, Albums.title, SUM(Songs.plays) AS plays
-      FROM Albums
-      JOIN Songs
-      ON Albums.album_id = Songs.album_id
-      GROUP BY Albums.album_id
-      ORDER BY plays DESC
-      `,
+            SELECT Albums.album_id, Albums.title, SUM(Songs.plays) AS plays
+            FROM Albums
+            JOIN Songs
+            ON Albums.album_id = Songs.album_id
+            GROUP BY Albums.album_id
+            ORDER BY plays DESC
+            `,
       (err, data) => {
         if (err || data.length === 0) {
           console.log(err);
@@ -247,15 +247,15 @@ const top_albums = async function (req, res) {
   } else {
     connection.query(
       `
-        SELECT Albums.album_id, Albums.title, SUM(Songs.plays) AS plays
-        FROM Albums
-        JOIN Songs
-        ON Albums.album_id = Songs.album_id
-        GROUP BY Albums.album_id
-        ORDER BY plays DESC
-        LIMIT ${pageSize}
-        OFFSET ${(page - 1) * pageSize}
-        `,
+                SELECT Albums.album_id, Albums.title, SUM(Songs.plays) AS plays
+                FROM Albums
+                JOIN Songs
+                ON Albums.album_id = Songs.album_id
+                GROUP BY Albums.album_id
+                ORDER BY plays DESC
+                LIMIT ${pageSize}
+                OFFSET ${(page - 1) * pageSize}
+                `,
       (err, data) => {
         if (err || data.length === 0) {
           console.log(err);
@@ -287,17 +287,17 @@ const search_songs = async function (req, res) {
 
   connection.query(
     `
-    SELECT *
-    FROM Songs
-    WHERE title LIKE '%${title}%'
-    AND duration BETWEEN ${durationLow} AND ${durationHigh}
-    AND plays BETWEEN ${playsLow} AND ${playsHigh}
-    AND danceability BETWEEN ${danceabilityLow} AND ${danceabilityHigh}
-    AND energy BETWEEN ${energyLow} AND ${energyHigh}
-    AND valence BETWEEN ${valenceLow} AND ${valenceHigh}
-    AND explicit <= ${explicit}
-    ORDER BY title ASC
-    `,
+        SELECT *
+        FROM Songs
+        WHERE title LIKE '%${title}%'
+        AND duration BETWEEN ${durationLow} AND ${durationHigh}
+        AND plays BETWEEN ${playsLow} AND ${playsHigh}
+        AND danceability BETWEEN ${danceabilityLow} AND ${danceabilityHigh}
+        AND energy BETWEEN ${energyLow} AND ${energyHigh}
+        AND valence BETWEEN ${valenceLow} AND ${valenceHigh}
+        AND explicit <= ${explicit}
+        ORDER BY title ASC
+        `,
     (err, data) => {
       if (err || data.length === 0) {
         console.log(err);

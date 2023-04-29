@@ -20,7 +20,7 @@ app.get("/avgRatingByLocation", routes.avgRatingByLocation);
 app.get("/ageGroupByLocation", routes.ageGroupByLocation);
 app.get("/popularAuthors", routes.getPopularAuthors);
 app.get("/mostPopularAuthorSearched", routes.mostPopularAuthorSearched);
-app.get("/temp", routes.temp);
+app.get("/books", routes.temp);
 
 app.listen(config.server_port, () => {
   console.log(

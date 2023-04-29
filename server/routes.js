@@ -3,14 +3,33 @@ const config = require("./config.json");
 
 // Creates MySQL connection using database credential provided in config.json
 // Do not edit. If the connection fails, make sure to check that config.json is filled out correctly
-const connection = mysql.createConnection({
+const db = mysql.createConnection({
   host: config.rds_host,
   user: config.rds_user,
   password: config.rds_password,
   port: config.rds_port,
   database: config.rds_db,
 });
-connection.connect((err) => err && console.log(err));
+db.connect((err) => err && console.log(err));
+
+const searchBooksByTitle = async function (req, res) {
+  const { title } = req.query.title;
+
+  const query = `
+                SELECT * FROM Books_basic WHERE Title LIKE '%${db.escape(
+                  title
+                )}%' ORDER BY Title ASC
+        `;
+
+  db.query(query, (err, data) => {
+    if (err || data.length === 0) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
 
 const filterBooksWFeatures = async function (req, res) {
   const { features } = req.query;
@@ -32,7 +51,7 @@ const filterBooksWFeatures = async function (req, res) {
                 ORDER BY a.Title ASC
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -61,7 +80,7 @@ const filterBooksWRatings = async function (req, res) {
                 ORDER BY a.Title ASC
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -81,7 +100,7 @@ const basicAnalysis = async function (req, res) {
                 ORDER BY a.Category ASC
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -92,18 +111,27 @@ const basicAnalysis = async function (req, res) {
 };
 
 const getBook = async function (req, res) {
-  const { ISBN } = req.query;
+  const { ISBN } = req.params;
+
+  // const query = `select * from Books_basic where ISBN = ${connection.escape(
+  //   ISBN
+  // )}`;
 
   const query = `
-                SELECT ISBN, Title, PublicationYear, Publisher, Author, ImageL, Category, Language,
-                Summary, AVG(Rating) AS AverageRating
-                FROM Book_basic a
-                JOIN Book_extra b ON a.ISBN = b.ISBN
-                JOIN Ratings c ON a.ISBN = c.Book
-                GROUP BY ISBN
-        `;
+                SELECT a.ISBN, Title, PublicationYear, Publisher, Author, ImageL, Category, Language, Summary, AverageRating
+                FROM
+                (SELECT * FROM Books_basic WHERE ISBN = ${db.escape(ISBN)}) a
+                JOIN (SELECT * FROM Books_extras WHERE ISBN = ${db.escape(
+                  ISBN
+                )}) b
+                ON a.ISBN = b.ISBN
+                JOIN (SELECT Book, AVG(Rating) AS AverageRating FROM Rates WHERE Book = ${db.escape(
+                  ISBN
+                )}) c
+                ON a.ISBN = c.Book
+                `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -121,7 +149,7 @@ const getBookCover = async function (req, res) {
                 FROM Books_basic
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -144,7 +172,7 @@ const getBookRatingsMap = async function (req, res) {
                 ORDER BY BB.title
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -168,7 +196,7 @@ const avgRatingByLocation = async function (req, res) {
                 GROUP BY BR.location
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -189,7 +217,7 @@ const ageGroupByLocation = async function (req, res) {
         GROUP BY BR.Title, BR.Location
     `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -223,7 +251,7 @@ const getPopularAuthors = async function (req, res) {
                 LIMIT 100;
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -249,7 +277,7 @@ const mostPopularAuthorSearched = async function (req, res) {
                 LIMIT 1
         `;
 
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -261,7 +289,7 @@ const mostPopularAuthorSearched = async function (req, res) {
 
 const temp = async function (req, res) {
   const query = `select * from Books_basic limit 100`;
-  connection.query(query, (err, data) => {
+  db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});
@@ -283,4 +311,5 @@ module.exports = {
   getPopularAuthors,
   mostPopularAuthorSearched,
   temp,
+  searchBooksByTitle,
 };

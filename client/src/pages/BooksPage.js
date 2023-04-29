@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import { Box, Container } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 const config = require("../config.json");
 
-export default function AlbumsPage() {
-  const [albums, setAlbums] = useState([]);
+export default function BooksPage() {
+  const { title } = useParams();
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    fetch(`http://${config.server_host}:${config.server_port}/books`)
-      .then((res) => res.json())
-      .then((resJson) => setAlbums(resJson));
+    title == null
+      ? fetch(`http://${config.server_host}:${config.server_port}/books`)
+          .then((res) => res.json())
+          .then((resJson) => setBooks(resJson))
+      : fetch(
+          `http://${config.server_host}:${config.server_port}/search?title=${title}`
+        )
+          .then((res) => res.json())
+          .then((resJson) => setBooks(resJson));
   }, []);
 
   const flexFormat = {
@@ -22,7 +29,7 @@ export default function AlbumsPage() {
 
   return (
     <Container style={flexFormat}>
-      {albums.map((book) => (
+      {books?.map((book) => (
         <Box
           key={book.ISBN}
           p={3}
@@ -42,7 +49,7 @@ export default function AlbumsPage() {
           />
 
           <h4>
-            <NavLink to={`/albums/${book.ISBN}`}>{book.Title}</NavLink>
+            <NavLink to={`/book/${book.ISBN}`}>{book.Title}</NavLink>
           </h4>
         </Box>
       ))}

@@ -33,7 +33,7 @@ export default function AlbumsPage() {
             border: "2px solid #000",
           }}
         >
-          <img src={book.ImageM} alt={`${book.Title} album art`} />
+          <img src={book.ImageL} alt={`${book.Title} album art`} />
 
           <h4>
             <NavLink to={`/albums/${book.ISBN}`}>{book.Title}</NavLink>

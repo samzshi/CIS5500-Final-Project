@@ -95,7 +95,7 @@ const getBook = async function (req, res) {
   const { ISBN } = req.query;
 
   const query = `
-                SELECT ISBN, Title, PublicationYear, Publisher, Author, Image, Category, Language,
+                SELECT ISBN, Title, PublicationYear, Publisher, Author, ImageL, Category, Language,
                 Summary, AVG(Rating) AS AverageRating
                 FROM Book_basic a
                 JOIN Book_extra b ON a.ISBN = b.ISBN

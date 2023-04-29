@@ -13,15 +13,12 @@ const db = mysql.createConnection({
 db.connect((err) => err && console.log(err));
 
 const searchBooksByTitle = async function (req, res) {
-  const { title } = req.query.title;
+  const { title } = req.query;
+  console.log(title);
+  const query =
+    "SELECT * FROM Books_basic WHERE Title LIKE '%" + title + "%' limit 100";
 
-  const query = `
-                SELECT * FROM Books_basic WHERE Title LIKE '%${db.escape(
-                  title
-                )}%' ORDER BY Title ASC
-        `;
-
-  db.query(query, (err, data) => {
+  db.query(query, [], (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
       res.json({});

@@ -18,7 +18,7 @@ export default function BooksPage() {
         )
           .then((res) => res.json())
           .then((resJson) => setBooks(resJson));
-  }, [title]);
+  }, []);
 
   const flexFormat = {
     display: "flex",

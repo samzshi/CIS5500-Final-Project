@@ -45,26 +45,6 @@ const searchBooks = async function (req, res) {
     " and " +
     avgRatingEnd +
     " limit 100";
-  // const query =
-  //   "with rate as (select book, avg(rating) as Avg_Rating, count(rating) as Num_of_Rating from Rates group by book) select * from Books_basic a join Books_extras b on a.ISBN = b.ISBN join rate on rate.book = a.ISBN where Title like '%" +
-  //   (title == "" ? "'" : title + "%'") +
-  //   " and Author like '%" +
-  //   (author == "" ? "'" : author + "%'") +
-  //   " and Category like '%" +
-  //   (category == "" ? "'" : category + "%'") +
-  //   " and PublicationYear between " +
-  //   publicationYearStart +
-  //   " and " +
-  //   publicationYearEnd +
-  //   " and Num_of_Rating between " +
-  //   numOfRatingStart +
-  //   " and " +
-  //   numOfRatingEnd +
-  //   " and Avg_Rating between " +
-  //   avgRatingStart +
-  //   " and " +
-  //   avgRatingEnd +
-  //   " limit 100";
 
   db.query(query, [], (err, data) => {
     if (err) {
@@ -286,22 +266,23 @@ const ageGroupByLocation = async function (req, res) {
 };
 
 const getPopularAuthors = async function (req, res) {
-  const query = "select Author, avg(Avg_Rating) as avg_rating, sum(Num_Of_Rating) as num_rating, count(*) as num_books from ThreeTables group by Author order by num_rating desc, avg_rating desc, num_books desc limit 100"
-//   const query = `
-//   WITH author_rating AS (
-// SELECT SUM(Num_Of_Rating) as num_rating, AVG(Avg_Rating) as
-// avg_rating, bb.Author
-// FROM ThreeTables br
-// JOIN Books_basic bb ON br.ISBN = bb.ISBN
-// GROUP BY bb.Author ),
-// num_books AS (SELECT Author, Count(*) as num_books
-// FROM Books_basic
-// GROUP BY Author)
-// SELECT n.Author, n.num_books, a.num_rating, avg_rating FROM num_books n
-// JOIN author_rating a ON n.Author = a.Author
-// ORDER BY a.num_rating desc, avg_rating desc, n.num_books desc
-// limit 100
-//         `;
+  const query =
+    "select Author, avg(Avg_Rating) as avg_rating, sum(Num_Of_Rating) as num_rating, count(*) as num_books from ThreeTables group by Author order by num_rating desc, avg_rating desc, num_books desc limit 100";
+  //   const query = `
+  //   WITH author_rating AS (
+  // SELECT SUM(Num_Of_Rating) as num_rating, AVG(Avg_Rating) as
+  // avg_rating, bb.Author
+  // FROM ThreeTables br
+  // JOIN Books_basic bb ON br.ISBN = bb.ISBN
+  // GROUP BY bb.Author ),
+  // num_books AS (SELECT Author, Count(*) as num_books
+  // FROM Books_basic
+  // GROUP BY Author)
+  // SELECT n.Author, n.num_books, a.num_rating, avg_rating FROM num_books n
+  // JOIN author_rating a ON n.Author = a.Author
+  // ORDER BY a.num_rating desc, avg_rating desc, n.num_books desc
+  // limit 100
+  //         `;
 
   db.query(query, (err, data) => {
     if (err || data.length === 0) {
@@ -341,7 +322,7 @@ const mostPopularAuthorSearched = async function (req, res) {
 };
 
 const temp = async function (req, res) {
-  const query = `select * from Books_basic limit 100`;
+  const query = `select * from Books_basic order by rand() limit 100`;
   db.query(query, (err, data) => {
     if (err || data.length === 0) {
       console.log(err);

@@ -30,6 +30,7 @@ export default function App() {
           <Route path="/" element={<BooksPage />} />
           <Route path="/book/:isbn" element={<BookInfoPage />} />
           <Route path="/search/:title" element={<BooksPage />} />
+          <Route path="/Authors" element={<AuthorsPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

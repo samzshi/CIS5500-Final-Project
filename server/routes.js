@@ -12,12 +12,75 @@ const db = mysql.createConnection({
 });
 db.connect((err) => err && console.log(err));
 
+const searchBooks = async function (req, res) {
+  const {
+    title,
+    author,
+    category,
+    publicationYearStart,
+    publicationYearEnd,
+    numOfRatingStart,
+    numOfRatingEnd,
+    avgRatingStart,
+    avgRatingEnd,
+  } = req.query;
+
+  const query =
+    "select * from ThreeTables where Title like '%" +
+    (title == "" ? "'" : title + "%'") +
+    " and Author like '%" +
+    (author == "" ? "'" : author + "%'") +
+    " and Category like '%" +
+    (category == "" ? "'" : category + "%'") +
+    " and PublicationYear between " +
+    publicationYearStart +
+    " and " +
+    publicationYearEnd +
+    " and Num_Of_Rating between " +
+    numOfRatingStart +
+    " and " +
+    numOfRatingEnd +
+    " and Avg_Rating between " +
+    avgRatingStart +
+    " and " +
+    avgRatingEnd +
+    " limit 100";
+  // const query =
+  //   "with rate as (select book, avg(rating) as Avg_Rating, count(rating) as Num_of_Rating from Rates group by book) select * from Books_basic a join Books_extras b on a.ISBN = b.ISBN join rate on rate.book = a.ISBN where Title like '%" +
+  //   (title == "" ? "'" : title + "%'") +
+  //   " and Author like '%" +
+  //   (author == "" ? "'" : author + "%'") +
+  //   " and Category like '%" +
+  //   (category == "" ? "'" : category + "%'") +
+  //   " and PublicationYear between " +
+  //   publicationYearStart +
+  //   " and " +
+  //   publicationYearEnd +
+  //   " and Num_of_Rating between " +
+  //   numOfRatingStart +
+  //   " and " +
+  //   numOfRatingEnd +
+  //   " and Avg_Rating between " +
+  //   avgRatingStart +
+  //   " and " +
+  //   avgRatingEnd +
+  //   " limit 100";
+
+  db.query(query, [], (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
+
 const searchBooksByTitle = async function (req, res) {
   const { title } = req.query;
   console.log(title);
   const query =
     "SELECT * FROM Books_basic WHERE Title LIKE '%" + title + "%' limit 100";
-
   db.query(query, [], (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
@@ -160,13 +223,12 @@ const getBookRatingsMap = async function (req, res) {
   const { ISBN } = req.query;
 
   const query = `
-                SELECT BB.title, LISTAGG(U.location) WITHIN GROUP (ORDER BY U.location) AS
-                Locations
-                FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON
-                U.ID = R.ID
-                WHERE BB.title = input
-                GROUP BY BB.title
-                ORDER BY BB.title
+          SELECT BB.title, GROUP_CONCAT(SUBSTRING_INDEX(SUBSTRING_INDEX(U.location, ',', -1), ',', 1) ORDER BY U.location) AS Locations
+          FROM (Books_basic BB JOIN Rates R ON BB.ISBN = R.Book) JOIN Users U ON
+          U.ID = R.ID
+          WHERE title = "${ISBN}"
+          GROUP BY BB.title
+          ORDER BY BB.title
         `;
 
   db.query(query, (err, data) => {
@@ -180,17 +242,17 @@ const getBookRatingsMap = async function (req, res) {
 };
 
 const avgRatingByLocation = async function (req, res) {
-  const { ISBN } = req.query;
+  const { title } = req.query;
 
   const query = `
-                SELECT DISTINCT BR.title, BR.location, AVG(BR.Rating) AS avg_rating
-                FROM (
-                SELECT BB.title, R.Rating, U.Location
-                FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book)
-                JOIN Users U ON U.ID = R.ID
+            SELECT DISTINCT BR.title, SUBSTRING_INDEX(BR.location, ',', -1) AS country, AVG(BR.Rating) AS avg_rating
+            FROM (
+                SELECT BB.title, R.Rating, U.location
+                FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
                 GROUP BY BB.title
-                ) BR
-                GROUP BY BR.location
+            ) BR
+            WHERE BR.title = "${title}"
+            GROUP BY country
         `;
 
   db.query(query, (err, data) => {
@@ -205,13 +267,12 @@ const avgRatingByLocation = async function (req, res) {
 
 const ageGroupByLocation = async function (req, res) {
   const query = `
-        SELECT BR.Title, BR.Location, MIN(BR.Age), MAX(BR.Age)
+        SELECT BR.Title, SUBSTRING_INDEX(BR.Location, ',', -1) AS country, MIN(BR.Age), MAX(BR.Age)
         FROM (
-        SELECT BB.Title, U.Age, U.Location
-        FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book)
-        JOIN Users U ON U.ID = R.ID
+            SELECT BB.Title, U.Age, U.location
+            FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
         ) BR
-        GROUP BY BR.Title, BR.Location
+        GROUP BY BR.Title, country;
     `;
 
   db.query(query, (err, data) => {
@@ -309,4 +370,5 @@ module.exports = {
   mostPopularAuthorSearched,
   temp,
   searchBooksByTitle,
+  searchBooks,
 };

@@ -37,11 +37,12 @@ export default function NavBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <NavText href="/" text="PagePal" isMain />
-          <NavText href="/Ratings" text="Ratings" />
+          <NavText href="/filter" text="Search" />
           <NavText href="/Books" text="Books" />
           <NavText href="/Authors" text="Authors" />
+          <NavText href="/bookratingbylocation" text="Geography" />
           <Input
-            placeholder="Search..."
+            placeholder="Search books by title..."
             disableUnderline
             style={{
               backgroundColor: "white",

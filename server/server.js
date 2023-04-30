@@ -15,7 +15,7 @@ app.get("/booksByRating", routes.filterBooksWRatings);
 app.get("/basicAnalysis", routes.basicAnalysis);
 app.get("/book/:ISBN", routes.getBook);
 app.get("/bookCover", routes.getBookCover);
-app.get("/bookRatingMap", routes.getBookRatingsMap);
+app.get("/getBookRatingsMap", routes.getBookRatingsMap);
 app.get("/avgRatingByLocation", routes.avgRatingByLocation);
 app.get("/ageGroupByLocation", routes.ageGroupByLocation);
 app.get("/popularAuthors", routes.getPopularAuthors);

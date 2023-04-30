@@ -58,6 +58,7 @@ const searchBooks = async function (req, res) {
 
 const searchBooksByTitle = async function (req, res) {
   const { title } = req.query;
+  console.log(title);
   const query =
     "SELECT * FROM Books_basic WHERE Title LIKE '%" + title + "%' limit 100";
   db.query(query, [], (err, data) => {
@@ -227,7 +228,7 @@ const avgRatingByLocation = async function (req, res) {
   const query = `
                 SELECT DISTINCT BR.title, BR.location, AVG(BR.Rating) AS avg_rating
                 FROM (
-                SELECT BB.title, R.Rating, u.Location
+                SELECT BB.title, R.Rating, U.Location
                 FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book)
                 JOIN Users U ON U.ID = R.ID
                 GROUP BY BB.title

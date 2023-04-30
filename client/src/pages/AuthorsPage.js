@@ -11,16 +11,7 @@ const AuthorsPage = () => {
       .then(response => response.json())
       .then(data => setPopularAuthors(data))
       .catch(error => console.log(error));
-
-    fetch('/api/mostPopularAuthorSearched')
-      .then(response => response.json())
-      .then(data => setMostSearchedAuthor(data[0]))
-      .catch(error => console.log(error));
   }, []);
-
-  useEffect(() => {
-    console.log(popularAuthors);
-  }, [popularAuthors]);
 
   return (
     <div>

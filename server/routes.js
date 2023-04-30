@@ -286,24 +286,22 @@ const ageGroupByLocation = async function (req, res) {
 };
 
 const getPopularAuthors = async function (req, res) {
-  const query = `
-  WITH book_rating AS (SELECT COUNT(*) as num_book_rating, SUM(Rating) as total_rating, Book
-  FROM Rates r
-  GROUP BY Book),
-author_rating AS (
-SELECT SUM(num_book_rating) as num_rating, AVG(total_rating) as
-avg_rating, bb.Author
-FROM book_rating br
-JOIN Books_basic bb ON br.Book = bb.ISBN
-GROUP BY bb.Author ),
-num_books AS (SELECT Author, Count(*) as num_books
-FROM Books_basic
-GROUP BY Author)
-SELECT n.Author, n.num_books, a.num_rating, avg_rating FROM num_books n
-JOIN author_rating a ON n.Author = a.Author
-ORDER BY a.num_rating desc, avg_rating desc, n.num_books desc
-limit 100
-        `;
+  const query = "select Author, avg(Avg_Rating) as avg_rating, sum(Num_Of_Rating) as num_rating, count(*) as num_books from ThreeTables group by Author order by num_rating desc, avg_rating desc, num_books desc limit 100"
+//   const query = `
+//   WITH author_rating AS (
+// SELECT SUM(Num_Of_Rating) as num_rating, AVG(Avg_Rating) as
+// avg_rating, bb.Author
+// FROM ThreeTables br
+// JOIN Books_basic bb ON br.ISBN = bb.ISBN
+// GROUP BY bb.Author ),
+// num_books AS (SELECT Author, Count(*) as num_books
+// FROM Books_basic
+// GROUP BY Author)
+// SELECT n.Author, n.num_books, a.num_rating, avg_rating FROM num_books n
+// JOIN author_rating a ON n.Author = a.Author
+// ORDER BY a.num_rating desc, avg_rating desc, n.num_books desc
+// limit 100
+//         `;
 
   db.query(query, (err, data) => {
     if (err || data.length === 0) {

@@ -10,6 +10,7 @@ const BookRatingByLocation = () => {
   const [bookData, setBookData] = useState([]);
   const [ageData, setAgeData] = useState([]);
   const [ratingCountData, setRatingCountData] = useState([]);
+  const [searched, setSearched] = useState(false);
 
   useEffect(() => {
     if (title) {
@@ -31,6 +32,7 @@ const BookRatingByLocation = () => {
 
   const handleSearch = () => {
     if (title) {
+        setSearched(true);
       const fetchData = async () => {
         const response = await fetch(`http://${config.server_host}:${config.server_port}/avgRatingByLocation?title=${title}`);
         const data = await response.json();
@@ -65,7 +67,7 @@ const BookRatingByLocation = () => {
       <Box mt={2}>
         <Button variant="contained" onClick={handleSearch}>Search</Button>
       </Box>
-      {title && (
+      {title && searched && (
         <Box mt={4} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
           <Box style={{ width: '33%' }}>
             <BarChart

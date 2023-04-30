@@ -6,6 +6,8 @@ import { createTheme } from "@mui/material/styles";
 import NavBar from "./components/NavBar";
 import BooksPage from "./pages/BooksPage";
 import BookInfoPage from "./pages/BookInfoPage";
+import AuthorsPage from "./pages/AuthorsPage";
+
 
 // createTheme enables you to customize the look and feel of your app past the default
 // in this case, we only change the color scheme

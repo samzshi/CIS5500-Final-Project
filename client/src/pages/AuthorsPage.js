@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
+const config = require("../config.json");
+
 const AuthorsPage = () => {
   const [popularAuthors, setPopularAuthors] = useState([]);
   const [mostSearchedAuthor, setMostSearchedAuthor] = useState({});
 
   useEffect(() => {
-    fetch('/api/popular-authors')
+    fetch(`http://${config.server_host}:${config.server_port}/popularAuthors`)
       .then(response => response.json())
       .then(data => setPopularAuthors(data))
       .catch(error => console.log(error));
 
-    fetch('/api/most-searched-author')
+    fetch('/api/mostPopularAuthorSearched')
       .then(response => response.json())
       .then(data => setMostSearchedAuthor(data[0]))
       .catch(error => console.log(error));
   }, []);
+
+  useEffect(() => {
+    console.log(popularAuthors);
+  }, [popularAuthors]);
 
   return (
     <div>

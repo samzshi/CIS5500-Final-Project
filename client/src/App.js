@@ -8,6 +8,7 @@ import BooksPage from "./pages/BooksPage";
 import BookInfoPage from "./pages/BookInfoPage";
 import BookRatingByLocation from "./pages/Geography";
 import BooksSearchPage from "./pages/BooksSearchPage";
+import AuthorsPage from "./pages/AuthorsPage";
 
 export const theme = createTheme({
   palette: {
@@ -26,8 +27,7 @@ export default function App() {
           <Route path="/" element={<BooksPage />} />
           <Route path="/book/:isbn" element={<BookInfoPage />} />
           <Route path="/search/:title" element={<BooksPage />} />
-          <Route path="/popularAuthors" element={<AuthorsPage />} />
-          <Route path="/mostPopularAuthorSearched" element={<AuthorsPage />} />
+          <Route path="/Authors" element={<AuthorsPage />} />
           <Route path="/bookratingbylocation" element={<BookRatingByLocation />} />
           <Route path="/filter" element={<BooksSearchPage />} />
         </Routes>

@@ -13,8 +13,7 @@ export default function BookInfoPage() {
     fetch(`http://${config.server_host}:${config.server_port}/book/${isbn}`)
       .then((res) => res.json())
       .then((resJson) => setBookData(...resJson));
-    console.log(bookData);
-  });
+  }, []);
 
   return (
     <Container>

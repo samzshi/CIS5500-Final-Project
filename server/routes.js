@@ -225,13 +225,13 @@ const avgRatingByLocation = async function (req, res) {
   const { title } = req.query;
 
   const query = `
-            SELECT DISTINCT BR.title, SUBSTRING_INDEX(BR.location, ',', -1) AS country, AVG(BR.Rating) AS avg_rating
+            SELECT DISTINCT BR.ISBN, SUBSTRING_INDEX(BR.location, ',', -1) AS country, AVG(BR.Rating) AS avg_rating
             FROM (
-                SELECT BB.title, R.Rating, U.location
+                SELECT BB.ISBN, R.Rating, U.location
                 FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
-                GROUP BY BB.title
+                GROUP BY BB.ISBN
             ) BR
-            WHERE BR.title = "${title}"
+            WHERE BR.ISBN = "${title}"
             GROUP BY country
         `;
 

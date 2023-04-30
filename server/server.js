@@ -19,7 +19,6 @@ app.get("/getBookRatingsMap", routes.getBookRatingsMap);
 app.get("/avgRatingByLocation", routes.avgRatingByLocation);
 app.get("/ageGroupByLocation", routes.ageGroupByLocation);
 app.get("/popularAuthors", routes.getPopularAuthors);
-app.get("/mostPopularAuthorSearched", routes.mostPopularAuthorSearched);
 app.get("/books", routes.temp);
 app.get("/search", routes.searchBooksByTitle);
 app.get("/searchBooks", routes.searchBooks);

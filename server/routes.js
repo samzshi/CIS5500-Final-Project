@@ -314,31 +314,6 @@ const getPopularAuthors = async function (req, res) {
   });
 };
 
-const mostPopularAuthorSearched = async function (req, res) {
-  const query = `
-                WITH new_books AS {
-                SELECT ISBN, NumSearched
-                FROM Books_meta b
-                WHERE b.DateImported BETWEEN (CURDATE() - INTERVAL 1 YEAR) AND
-                CURDATE()
-                }
-                SELECT b.Author, SUM(n.NumSearched) as search_count
-                FROM new_books n
-                JOIN Books_basic b ON n.ISBN = b.ISBN
-                GROUP BY b.Author
-                ORDER BY search_count
-                LIMIT 1
-        `;
-
-  db.query(query, (err, data) => {
-    if (err || data.length === 0) {
-      console.log(err);
-      res.json({});
-    } else {
-      res.json(data);
-    }
-  });
-};
 
 const temp = async function (req, res) {
   const query = `select * from Books_basic limit 100`;

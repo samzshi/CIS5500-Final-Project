@@ -38,7 +38,6 @@ export default function NavBar() {
         <Toolbar disableGutters>
           <NavText href="/" text="PagePal" isMain />
           <NavText href="/filter" text="Search" />
-          <NavText href="/Books" text="Books" />
           <NavText href="/Authors" text="Authors" />
           <NavText href="/bookratingbylocation" text="Geography" />
           <Input

@@ -159,13 +159,12 @@ const getBookRatingsMap = async function (req, res) {
   const { ISBN } = req.query;
 
   const query = `
-                SELECT BB.title, LISTAGG(U.location) WITHIN GROUP (ORDER BY U.location) AS
-                Locations
-                FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON
-                U.ID = R.ID
-                WHERE BB.title = input
-                GROUP BY BB.title
-                ORDER BY BB.title
+          SELECT BB.title, GROUP_CONCAT(SUBSTRING_INDEX(SUBSTRING_INDEX(U.location, ',', -1), ',', 1) ORDER BY U.location) AS Locations
+          FROM (Books_basic BB JOIN Rates R ON BB.ISBN = R.Book) JOIN Users U ON
+          U.ID = R.ID
+          WHERE title = "${ISBN}"
+          GROUP BY BB.title
+          ORDER BY BB.title
         `;
 
   db.query(query, (err, data) => {
@@ -179,17 +178,17 @@ const getBookRatingsMap = async function (req, res) {
 };
 
 const avgRatingByLocation = async function (req, res) {
-  const { ISBN } = req.query;
+  const { title } = req.query;
 
   const query = `
-            SELECT DISTINCT BR.title, BR.location, AVG(BR.Rating) AS avg_rating
+            SELECT DISTINCT BR.title, SUBSTRING_INDEX(BR.location, ',', -1) AS country, AVG(BR.Rating) AS avg_rating
             FROM (
-            SELECT BB.title, R.Rating, U.Location
-            FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book)
-            JOIN Users U ON U.ID = R.ID
-            GROUP BY BB.title
+                SELECT BB.title, R.Rating, U.location
+                FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
+                GROUP BY BB.title
             ) BR
-            GROUP BY BR.location
+            WHERE BR.title = "${title}"
+            GROUP BY country
         `;
 
   db.query(query, (err, data) => {
@@ -204,13 +203,12 @@ const avgRatingByLocation = async function (req, res) {
 
 const ageGroupByLocation = async function (req, res) {
   const query = `
-        SELECT BR.Title, BR.Location, MIN(BR.Age), MAX(BR.Age)
+        SELECT BR.Title, SUBSTRING_INDEX(BR.Location, ',', -1) AS country, MIN(BR.Age), MAX(BR.Age)
         FROM (
-        SELECT BB.Title, U.Age, U.Location
-        FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book)
-        JOIN Users U ON U.ID = R.ID
+            SELECT BB.Title, U.Age, U.location
+            FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
         ) BR
-        GROUP BY BR.Title, BR.Location
+        GROUP BY BR.Title, country;
     `;
 
   db.query(query, (err, data) => {

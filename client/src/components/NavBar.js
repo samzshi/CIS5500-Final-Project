@@ -39,6 +39,7 @@ export default function NavBar() {
           <NavText href="/" text="PagePal" isMain />
           <NavText href="/Ratings" text="Ratings" />
           <NavText href="/Books" text="Books" />
+          <NavText href="/bookratingbylocation" text="Geography" />
           <Input
             placeholder="Search..."
             disableUnderline

@@ -37,7 +37,7 @@ export default function NavBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <NavText href="/" text="PagePal" isMain />
-          <NavText href="/Ratings" text="Ratings" />
+          <NavText href="/filter" text="Search" />
           <NavText href="/Books" text="Books" />
           <NavText href="/bookratingbylocation" text="Geography" />
           <Input

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const AuthorsPage = () => {
   const [popularAuthors, setPopularAuthors] = useState([]);
   const [mostSearchedAuthor, setMostSearchedAuthor] = useState({});
 
   useEffect(() => {
-    axios.get('/api/popular-authors')
-      .then(response => setPopularAuthors(response.data))
+    fetch('/api/popular-authors')
+      .then(response => response.json())
+      .then(data => setPopularAuthors(data))
       .catch(error => console.log(error));
 
-    axios.get('/api/most-searched-author')
-      .then(response => setMostSearchedAuthor(response.data[0]))
+    fetch('/api/most-searched-author')
+      .then(response => response.json())
+      .then(data => setMostSearchedAuthor(data[0]))
       .catch(error => console.log(error));
   }, []);
 

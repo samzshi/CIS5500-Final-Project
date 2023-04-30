@@ -12,6 +12,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 
 import { formatDuration } from "../helpers/formatter";
+import { NavLink } from "react-router-dom";
 const config = require("../config.json");
 
 export default function BooksSearchPage() {
@@ -58,7 +59,7 @@ export default function BooksSearchPage() {
       headerName: "Title",
       width: 300,
       renderCell: (params) => (
-        <Link onClick={() => setISBN(params.row.ISBN)}>{params.value}</Link>
+        <NavLink to={`/book/${params.row.ISBN}`}>{params.value}</NavLink>
       ),
     },
     { field: "Author", headerName: "Author", width: 200 },

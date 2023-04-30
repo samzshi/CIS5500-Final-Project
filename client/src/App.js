@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import BooksPage from "./pages/BooksPage";
 import BookInfoPage from "./pages/BookInfoPage";
 import BookRatingByLocation from "./pages/Geography";
+import BooksSearchPage from "./pages/BooksSearchPage";
 
 export const theme = createTheme({
   palette: {
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/book/:isbn" element={<BookInfoPage />} />
           <Route path="/search/:title" element={<BooksPage />} />
           <Route path="/bookratingbylocation" element={<BookRatingByLocation />} />
+          <Route path="/filter" element={<BooksSearchPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

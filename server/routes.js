@@ -12,11 +12,55 @@ const db = mysql.createConnection({
 });
 db.connect((err) => err && console.log(err));
 
+const searchBooks = async function (req, res) {
+  const {
+    title,
+    author,
+    category,
+    publicationYearStart,
+    publicationYearEnd,
+    numOfRatingStart,
+    numOfRatingEnd,
+    avgRatingStart,
+    avgRatingEnd,
+  } = req.query;
+
+  const query =
+    "with rate as (select book, avg(rating) as Avg_Rating, count(rating) as Num_of_Rating from Rates group by book) select * from Books_basic a join Books_extras b on a.ISBN = b.ISBN join rate on rate.book = a.ISBN where Title like '%" +
+    (title == "" ? "'" : title + "%'") +
+    " and Author like '%" +
+    (author == "" ? "'" : author + "%'") +
+    " and Category like '%" +
+    (category == "" ? "'" : category + "%'") +
+    " and PublicationYear between " +
+    publicationYearStart +
+    " and " +
+    publicationYearEnd +
+    " and Num_of_Rating between " +
+    numOfRatingStart +
+    " and " +
+    numOfRatingEnd +
+    " and Avg_Rating between " +
+    avgRatingStart +
+    " and " +
+    avgRatingEnd +
+    " limit 100";
+
+  db.query(query, [], (err, data) => {
+    if (err) {
+      console.log(err);
+      res.json({});
+    } else {
+      res.json(data);
+    }
+  });
+};
+
 const searchBooksByTitle = async function (req, res) {
   const { title } = req.query;
+  console.log(title);
   const query =
     "SELECT * FROM Books_basic WHERE Title LIKE '%" + title + "%' limit 100";
-
   db.query(query, [], (err, data) => {
     if (err || data.length === 0) {
       console.log(err);
@@ -306,4 +350,5 @@ module.exports = {
   mostPopularAuthorSearched,
   temp,
   searchBooksByTitle,
+  searchBooks,
 };

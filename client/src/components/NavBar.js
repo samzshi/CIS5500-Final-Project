@@ -41,7 +41,7 @@ export default function NavBar() {
           <NavText href="/Books" text="Books" />
           <NavText href="/bookratingbylocation" text="Geography" />
           <Input
-            placeholder="Search..."
+            placeholder="Search books by title..."
             disableUnderline
             style={{
               backgroundColor: "white",

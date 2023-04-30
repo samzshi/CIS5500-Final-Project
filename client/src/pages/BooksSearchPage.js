@@ -65,7 +65,7 @@ export default function BooksSearchPage() {
     { field: "Author", headerName: "Author", width: 200 },
     { field: "Category", headerName: "Catagory", width: 200 },
     { field: "PublicationYear", headerName: "Publication Year", width: 200 },
-    { field: "Num_of_Rating", headerName: "Number of Ratings", width: 200 },
+    { field: "Num_Of_Rating", headerName: "Number of Ratings", width: 200 },
     { field: "Avg_Rating", headerName: "Average Rating", width: 200 },
   ];
 
@@ -128,7 +128,7 @@ export default function BooksSearchPage() {
           />
         </Grid>
         <Grid item xs={4}>
-          <p>Averge Rating</p>
+          <p>Average Rating</p>
           <Slider
             value={avgRating}
             min={0}

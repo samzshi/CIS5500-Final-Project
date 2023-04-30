@@ -26,7 +26,7 @@ const searchBooks = async function (req, res) {
   } = req.query;
 
   const query =
-    "with rate as (select book, avg(rating) as Avg_Rating, count(rating) as Num_of_Rating from Rates group by book) select * from Books_basic a join Books_extras b on a.ISBN = b.ISBN join rate on rate.book = a.ISBN where Title like '%" +
+    "select * from ThreeTables where Title like '%" +
     (title == "" ? "'" : title + "%'") +
     " and Author like '%" +
     (author == "" ? "'" : author + "%'") +
@@ -36,7 +36,7 @@ const searchBooks = async function (req, res) {
     publicationYearStart +
     " and " +
     publicationYearEnd +
-    " and Num_of_Rating between " +
+    " and Num_Of_Rating between " +
     numOfRatingStart +
     " and " +
     numOfRatingEnd +
@@ -45,6 +45,26 @@ const searchBooks = async function (req, res) {
     " and " +
     avgRatingEnd +
     " limit 100";
+  // const query =
+  //   "with rate as (select book, avg(rating) as Avg_Rating, count(rating) as Num_of_Rating from Rates group by book) select * from Books_basic a join Books_extras b on a.ISBN = b.ISBN join rate on rate.book = a.ISBN where Title like '%" +
+  //   (title == "" ? "'" : title + "%'") +
+  //   " and Author like '%" +
+  //   (author == "" ? "'" : author + "%'") +
+  //   " and Category like '%" +
+  //   (category == "" ? "'" : category + "%'") +
+  //   " and PublicationYear between " +
+  //   publicationYearStart +
+  //   " and " +
+  //   publicationYearEnd +
+  //   " and Num_of_Rating between " +
+  //   numOfRatingStart +
+  //   " and " +
+  //   numOfRatingEnd +
+  //   " and Avg_Rating between " +
+  //   avgRatingStart +
+  //   " and " +
+  //   avgRatingEnd +
+  //   " limit 100";
 
   db.query(query, [], (err, data) => {
     if (err) {

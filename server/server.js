@@ -22,6 +22,7 @@ app.get("/popularAuthors", routes.getPopularAuthors);
 app.get("/mostPopularAuthorSearched", routes.mostPopularAuthorSearched);
 app.get("/books", routes.temp);
 app.get("/search", routes.searchBooksByTitle);
+app.get("/searchBooks", routes.searchBooks);
 
 app.listen(config.server_port, () => {
   console.log(

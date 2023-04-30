@@ -6,6 +6,7 @@ import { createTheme } from "@mui/material/styles";
 import NavBar from "./components/NavBar";
 import BooksPage from "./pages/BooksPage";
 import BookInfoPage from "./pages/BookInfoPage";
+import BooksSearchPage from "./pages/BooksSearchPage";
 
 // createTheme enables you to customize the look and feel of your app past the default
 // in this case, we only change the color scheme
@@ -30,6 +31,7 @@ export default function App() {
           <Route path="/" element={<BooksPage />} />
           <Route path="/book/:isbn" element={<BookInfoPage />} />
           <Route path="/search/:title" element={<BooksPage />} />
+          <Route path="/filter" element={<BooksSearchPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

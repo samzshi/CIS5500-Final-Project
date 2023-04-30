@@ -40,7 +40,7 @@ export default function NavBar() {
           <NavText href="/Ratings" text="Ratings" />
           <NavText href="/Books" text="Books" />
           <Input
-            placeholder="Search..."
+            placeholder="Search books by title..."
             disableUnderline
             style={{
               backgroundColor: "white",

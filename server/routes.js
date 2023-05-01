@@ -58,7 +58,6 @@ const searchBooks = async function (req, res) {
 
 const searchBooksByTitle = async function (req, res) {
   const { title } = req.query;
-  console.log(title);
   const query =
     "SELECT * FROM Books_basic WHERE Title LIKE '%" + title + "%' limit 100";
   db.query(query, [], (err, data) => {
@@ -299,7 +298,6 @@ const getPopularAuthors = async function (req, res) {
   });
 };
 
-
 const temp = async function (req, res) {
   const query = `select * from Books_basic order by rand() limit 100`;
   db.query(query, (err, data) => {
@@ -322,7 +320,6 @@ module.exports = {
   avgRatingByLocation,
   ageGroupByLocation,
   getPopularAuthors,
-  mostPopularAuthorSearched,
   temp,
   searchBooksByTitle,
   searchBooks,

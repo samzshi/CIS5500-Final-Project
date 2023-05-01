@@ -36,10 +36,6 @@ const AuthorsPage = () => {
           ))}
         </tbody>
       </table>
-
-      <h1>Most Searched Author</h1>
-      <p>{mostSearchedAuthor.Author}</p>
-      <p>{mostSearchedAuthor.search_count} searches in the past year</p>
     </div>
   );
 };

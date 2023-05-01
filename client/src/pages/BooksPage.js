@@ -28,11 +28,12 @@ export default function BooksPage() {
   };
 
   return (
-    <Container style={flexFormat}>
+    <Container>
       {books.length > 0 ? (
-        books.map((book) => (
+        <>
+          <h3 style={{ textAlign: "center", fontSize: "32px" }}>Book of the day for you!</h3>
           <Box
-            key={book.ISBN}
+            key={books[0].ISBN}
             p={3}
             m={2}
             style={{
@@ -41,19 +42,45 @@ export default function BooksPage() {
               border: "2px solid #000",
               width: "300px",
               height: "400px",
+              margin: "0 auto",
             }}
           >
             <img
-              src={book.ImageL}
-              alt={`${book.Title} album art`}
+              src={books[0].ImageL}
+              alt={`${books[0].Title} album art`}
               style={{ width: 250, height: 350 }}
             />
-
             <h4>
-              <NavLink to={`/book/${book.ISBN}`}>{book.Title}</NavLink>
+              <NavLink to={`/book/${books[0].ISBN}`}>{books[0].Title}</NavLink>
             </h4>
           </Box>
-        ))
+          <Container style={{ ...flexFormat, marginTop: "50px" }}>
+            {books.slice(1).map((book) => (
+              <Box
+                key={book.ISBN}
+                p={3}
+                m={2}
+                style={{
+                  background: "white",
+                  borderRadius: "16px",
+                  border: "2px solid #000",
+                  width: "300px",
+                  height: "400px",
+                }}
+              >
+                <img
+                  src={book.ImageL}
+                  alt={`${book.Title} album art`}
+                  style={{ width: 250, height: 350 }}
+                />
+
+                <h4>
+                  <NavLink to={`/book/${book.ISBN}`}>{book.Title}</NavLink>
+                </h4>
+              </Box>
+            ))}
+          </Container>
+        </>
       ) : (
         <h1>No books found</h1>
       )}

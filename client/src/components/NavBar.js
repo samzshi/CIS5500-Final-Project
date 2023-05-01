@@ -31,27 +31,29 @@ export default function NavBar() {
   return (
     <AppBar position="static" style={{ backgroundColor: "#FFA500" }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters style={{flexGrow: 1}}>
           <NavText href="/" text="PagePal" isMain />
           <NavText href="/filter" text="Search" />
           <NavText href="/Authors" text="Authors" />
           <NavText href="/bookratingbylocation" text="Geography" />
-          <Input
-            placeholder="Search books by title..."
-            disableUnderline
-            style={{
-              backgroundColor: "white",
-              borderRadius: "20px",
-              padding: "0.5rem 1rem",
-              width: "20rem",
-              marginRight: "1.5rem"
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                window.location.href = `/search/${e.target.value}`;
-              }
-            }}
-          />
+          <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'flex-end' }}>
+            <Input
+              placeholder="Search books by title..."
+              disableUnderline
+              style={{
+                backgroundColor: "white",
+                borderRadius: "20px",
+                padding: "0.5rem 1rem",
+                width: "20rem",
+                marginLeft: "1.5rem"
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  window.location.href = `/search/${e.target.value}`;
+                }
+              }}
+            />
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

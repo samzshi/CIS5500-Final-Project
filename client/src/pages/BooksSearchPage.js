@@ -77,7 +77,7 @@ export default function BooksSearchPage() {
           handleClose={() => setSelectedSongId(null)}
         />
       )} */}
-      <h2>Search Books</h2>
+      <h2>Search Books You Want!</h2>
       <Grid container spacing={6}>
         <Grid item xs={4}>
           <TextField

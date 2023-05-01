@@ -202,14 +202,16 @@ const getBookRatingsMap = async function (req, res) {
   const { title } = req.query;
 
   const query = `
-          SELECT DISTINCT BR.ISBN, SUBSTRING_INDEX(BR.location, ',', -1) AS country, COUNT(BR.Rating) AS count_rating
+          SELECT BR.ISBN, BB.Title, SUBSTRING_INDEX(BR.location, ',', -1) AS country, COUNT(BR.Rating) AS count_rating
           FROM (
-              SELECT BB.ISBN, R.Rating, U.location
-              FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
-              GROUP BY BB.ISBN
+            SELECT BB.ISBN, R.Rating, U.location
+            FROM Books_basic BB
+            JOIN Ratings R ON BB.ISBN = R.Book
+            JOIN Users U ON U.ID = R.ID
           ) BR
+          JOIN Books_basic BB ON BR.ISBN = BB.ISBN
           WHERE BR.ISBN = "${title}"
-          GROUP BY country
+          GROUP BY BR.ISBN, country;
         `;
 
   db.query(query, (err, data) => {
@@ -226,14 +228,16 @@ const avgRatingByLocation = async function (req, res) {
   const { title } = req.query;
 
   const query = `
-            SELECT DISTINCT BR.ISBN, SUBSTRING_INDEX(BR.location, ',', -1) AS country, AVG(BR.Rating) AS avg_rating
-            FROM (
-                SELECT BB.ISBN, R.Rating, U.location
-                FROM (Books_basic BB JOIN Ratings R ON BB.ISBN = R.Book) JOIN Users U ON U.ID = R.ID
-                GROUP BY BB.ISBN
-            ) BR
-            WHERE BR.ISBN = "${title}"
-            GROUP BY country
+          SELECT BR.ISBN, BB.Title, SUBSTRING_INDEX(BR.location, ',', -1) AS country, AVG(BR.Rating) AS avg_rating
+          FROM (
+            SELECT BB.ISBN, R.Rating, U.location
+            FROM Books_basic BB
+            JOIN Ratings R ON BB.ISBN = R.Book
+            JOIN Users U ON U.ID = R.ID
+          ) BR
+          JOIN Books_basic BB ON BR.ISBN = BB.ISBN
+          WHERE BR.ISBN = "${title}"
+          GROUP BY BR.ISBN, country;
         `;
 
   db.query(query, (err, data) => {

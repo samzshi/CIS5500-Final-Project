@@ -1,4 +1,4 @@
-import { AppBar, Container, Toolbar, Typography, Input } from "@mui/material";
+import { AppBar, Container, Toolbar, Typography, Input, Box } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 const NavText = ({ href, text, isMain }) => {
@@ -36,7 +36,6 @@ export default function NavBar() {
           <NavText href="/filter" text="Search" />
           <NavText href="/Authors" text="Authors" />
           <NavText href="/bookratingbylocation" text="Geography" />
-          <div style={{ flexGrow: 1 }} />
           <Input
             placeholder="Search books by title..."
             disableUnderline

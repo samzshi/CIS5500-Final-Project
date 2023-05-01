@@ -1,18 +1,17 @@
 import { AppBar, Container, Toolbar, Typography, Input } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
-// The hyperlinks in the NavBar contain a lot of repeated formatting code so a
-// helper component NavText local to the file is defined to prevent repeated code.
 const NavText = ({ href, text, isMain }) => {
   return (
     <Typography
-      variant={isMain ? "h5" : "h7"}
+      variant={isMain ? "h4" : "h6"}
       noWrap
       style={{
-        marginRight: "30px",
-        fontFamily: "monospace",
+        fontFamily: "Montserrat",
         fontWeight: 700,
-        letterSpacing: ".3rem",
+        letterSpacing: "0.1rem",
+        color: "#fff",
+        marginRight: "1.5rem"
       }}
     >
       <NavLink
@@ -28,25 +27,25 @@ const NavText = ({ href, text, isMain }) => {
   );
 };
 
-// Here, we define the NavBar. Note that we heavily leverage MUI components
-// to make the component look nice. Feel free to try changing the formatting
-// props to how it changes the look of the component.
 export default function NavBar() {
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ backgroundColor: "#FFA500" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <NavText href="/" text="PagePal" isMain />
           <NavText href="/filter" text="Search" />
           <NavText href="/Authors" text="Authors" />
           <NavText href="/bookratingbylocation" text="Geography" />
+          <div style={{ flexGrow: 1 }} />
           <Input
             placeholder="Search books by title..."
             disableUnderline
             style={{
               backgroundColor: "white",
-              borderRadius: "5px",
-              padding: "5px 10px",
+              borderRadius: "20px",
+              padding: "0.5rem 1rem",
+              width: "20rem",
+              marginRight: "1.5rem"
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
